@@ -5,8 +5,14 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 // trim spaces, line breaks and quotes that often come along when a key is pasted
 const KEY = (Deno.env.get("GROQ_API_KEY") ?? "").trim().replace(/^["']|["']$/g, "").trim();
 const KEY_SHAPE = `gsk_prefix=${KEY.startsWith("gsk_")} length=${KEY.length}`;   // safe to log, never the key itself
-const MODEL = Deno.env.get("GROQ_MODEL") ?? "llama-3.3-70b-versatile";
-const STT_MODEL = Deno.env.get("GROQ_STT_MODEL") ?? "whisper-large-v3-turbo";
+// Groq retires models often (llama-3.3-70b-versatile went in Aug 2026), so try a short list in order
+// and remember the first one that answers. GROQ_MODEL / GROQ_STT_MODEL, if set, go first.
+const uniq = (a: (string | undefined)[]) => [...new Set(a.filter((x): x is string => !!x))];
+const MODELS = uniq([Deno.env.get("GROQ_MODEL"), "openai/gpt-oss-120b", "openai/gpt-oss-20b", "llama-3.3-70b-versatile"]);
+const STT_MODELS = uniq([Deno.env.get("GROQ_STT_MODEL"), "whisper-large-v3-turbo", "whisper-large-v3"]);
+let MODEL = MODELS[0];
+let STT_MODEL = STT_MODELS[0];
+const gone = (status: number, body: string) => status === 404 || body.includes("model_not_found") || body.includes("decommissioned");
 const GROQ = "https://api.groq.com/openai/v1";
 
 const ORIGINS = ["https://jaiye-eta.vercel.app", "https://jaiye-me-e0de.vercel.app", "http://localhost:5173", "http://localhost:4173"];
@@ -47,24 +53,44 @@ async function parse(req: Request, body: Record<string, unknown>) {
   const local = String(body.local ?? "").slice(0, 16);
   const weekday = String(body.weekday ?? "").slice(0, 12);
   const currency = String(body.currency ?? "NGN").slice(0, 3);
-  const r = await fetch(`${GROQ}/chat/completions`, {
+  const ask = (model: string, plain = false) => fetch(`${GROQ}/chat/completions`, {
     method: "POST",
     headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: MODEL,
+      model,
       temperature: 0,
-      max_tokens: 700,
-      response_format: { type: "json_object" },
+      max_tokens: 1500,
+      ...(plain ? {} : { response_format: { type: "json_object" } }),
+      ...(!plain && model.startsWith("openai/gpt-oss") ? { reasoning_effort: "low" } : {}),
       messages: [
         { role: "system", content: SYSTEM },
         { role: "user", content: `Current local time: ${local} (${weekday}). Currency: ${currency}.\nMessage: ${text}` },
       ],
     }),
   });
-  if (!r.ok) { console.error("groq parse", r.status, KEY_SHAPE, MODEL, (await r.text()).slice(0, 200)); return json(req, { error: "ai_failed", status: r.status }, 502); }
+  let r = await ask(MODEL);
+  if (r.status === 400) {   // a model that doesn't take JSON mode or reasoning_effort: ask again plainly
+    const t = await r.text();
+    console.warn("groq parse 400, retrying plain", MODEL, t.slice(0, 160));
+    r = await ask(MODEL, true);
+  }
+  if (!r.ok) {
+    const first = await r.text();
+    if (gone(r.status, first)) {
+      for (const m of MODELS.filter(x => x !== MODEL)) {
+        r = await ask(m);
+        if (r.ok) { console.log("groq parse: switched model to", m); MODEL = m; break; }
+        const t = await r.text();
+        if (!gone(r.status, t)) { console.error("groq parse", r.status, KEY_SHAPE, m, t.slice(0, 200)); return json(req, { error: "ai_failed", status: r.status }, 502); }
+      }
+    }
+    if (!r.ok) { console.error("groq parse", r.status, KEY_SHAPE, MODEL, first.slice(0, 200)); return json(req, { error: "ai_failed", status: r.status }, 502); }
+  }
   const data = await r.json();
   let out: { items?: unknown[] } = {};
-  try { out = JSON.parse(data.choices?.[0]?.message?.content ?? "{}"); } catch { return json(req, { error: "bad_ai_reply" }, 502); }
+  const content = String(data.choices?.[0]?.message?.content ?? "{}");
+  const raw = content.slice(content.indexOf("{"), content.lastIndexOf("}") + 1) || "{}";   // tolerate ```json fences
+  try { out = JSON.parse(raw); } catch { console.error("groq parse: not JSON", MODEL, content.slice(0, 160)); return json(req, { error: "bad_ai_reply" }, 502); }
   const items = (Array.isArray(out.items) ? out.items : []).slice(0, 8).flatMap((raw) => {
     const it = raw as Record<string, unknown>;
     const kind = KINDS.includes(String(it.kind)) ? String(it.kind) : "note";
@@ -89,13 +115,26 @@ async function transcribe(req: Request) {
   const file = form.get("file");
   if (!(file instanceof File)) return json(req, { error: "no_audio" }, 400);
   if (file.size > 10 * 1024 * 1024) return json(req, { error: "too_long" }, 413);
-  const fd = new FormData();
-  fd.append("file", file, file.name || "voice.webm");
-  fd.append("model", STT_MODEL);
-  fd.append("response_format", "json");
-  fd.append("temperature", "0");
-  const r = await fetch(`${GROQ}/audio/transcriptions`, { method: "POST", headers: { Authorization: `Bearer ${KEY}` }, body: fd });
-  if (!r.ok) { console.error("groq stt", r.status, KEY_SHAPE, STT_MODEL, (await r.text()).slice(0, 200)); return json(req, { error: "stt_failed", status: r.status }, 502); }
+  const send = (model: string) => {
+    const fd = new FormData();
+    fd.append("file", file, file.name || "voice.webm");
+    fd.append("model", model);
+    fd.append("response_format", "json");
+    fd.append("temperature", "0");
+    return fetch(`${GROQ}/audio/transcriptions`, { method: "POST", headers: { Authorization: `Bearer ${KEY}` }, body: fd });
+  };
+  let r = await send(STT_MODEL);
+  if (!r.ok) {
+    const first = await r.text();
+    if (gone(r.status, first)) {
+      for (const m of STT_MODELS.filter(x => x !== STT_MODEL)) {
+        r = await send(m);
+        if (r.ok) { console.log("groq stt: switched model to", m); STT_MODEL = m; break; }
+        await r.text();
+      }
+    }
+    if (!r.ok) { console.error("groq stt", r.status, KEY_SHAPE, STT_MODEL, first.slice(0, 200)); return json(req, { error: "stt_failed", status: r.status }, 502); }
+  }
   const data = await r.json();
   return json(req, { text: String(data.text ?? "").trim().slice(0, 600) });
 }
