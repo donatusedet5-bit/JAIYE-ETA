@@ -500,3 +500,35 @@ button.jx-li:active { background: var(--muted) !important; }
 .jx-sheet-wrap { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(8,10,18,.42); }
 .jx-glass { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,.2) !important; }
 .jx-sheet, .jx-tabs__pill, .jx-toast { will-change: transform; }
+
+/* ---------- Smart capture (Stage 3) ---------- */
+.jx-mic { height: 34px; min-width: 34px; padding: 0 10px !important; border-radius: 999px; display: inline-flex !important; align-items: center; gap: 6px; background: var(--accent-soft) !important; color: var(--accent) !important; font-size: 13px; font-weight: 600; transition: transform .12s var(--ease-out), background .12s; }
+.jx-mic:active:not(:disabled) { transform: scale(.92); }
+.jx-mic:disabled { opacity: .4; }
+.jx-mic.is-on { background: var(--danger) !important; color: #fff !important; }
+.jx-mic.is-on svg { animation: jx-mic 1s ease-in-out infinite; }
+@keyframes jx-mic { 50% { transform: scale(1.18); } }
+.jx-tellbox.is-listening { border-color: var(--danger); box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 16%, transparent); }
+.jx-reading { display: inline-flex; align-items: center; gap: 4px; height: 34px; padding: 0 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 600; }
+.jx-reading i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: jx-dot .7s ease-in-out infinite; }
+.jx-reading i:nth-child(2) { animation-delay: .1s; } .jx-reading i:nth-child(3) { animation-delay: .2s; margin-right: 4px; }
+@keyframes jx-dot { 50% { transform: translateY(-3px); opacity: .5; } }
+.jx-note--tell { margin: 10px 4px 0; color: var(--text-2); }
+
+.jx-found { animation: jx-fade .15s ease-out; }
+.jx-found__said { color: var(--text-2); font-size: 14px; margin: -2px 4px 10px; overflow-wrap: anywhere; }
+.jx-found__item { padding: 12px 14px; margin-bottom: 8px; display: flex !important; flex-direction: column; gap: 8px; animation: jx-in .18s var(--ease-out) both; }
+.jx-found__top { display: flex; justify-content: space-between; align-items: center; }
+.jx-found__kind { position: relative; display: inline-flex; align-items: center; height: 26px; border-radius: 999px; padding: 0 22px 0 10px; font-size: 12.5px; font-weight: 600; }
+.jx-found__kind::after { content: ''; position: absolute; right: 9px; top: 10px; width: 5px; height: 5px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); pointer-events: none; }
+.jx-found__kind select { appearance: none; -webkit-appearance: none; border: 0; background: none; color: inherit; font: inherit; font-weight: 600; outline: none; padding: 0; }
+.jx-found__x { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--muted) !important; color: var(--text-2) !important; }
+.jx-found__title { border: 0; background: none; font-size: 16px; font-weight: 600; letter-spacing: -0.02em; outline: none; padding: 2px 0; width: 100%; border-bottom: 1.5px solid transparent; }
+.jx-found__title:focus { border-bottom-color: var(--accent); }
+.jx-found__row { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.jx-found__row input[type=datetime-local] { background: var(--muted); border: 0; border-radius: 10px; height: 34px; padding: 0 10px; font-size: 14px; font-weight: 500; color: var(--text); min-width: 0; max-width: 62%; }
+.jx-found__when { font-size: 14px; font-weight: 500; color: var(--text-2); }
+.jx-found__cats { display: flex; flex-wrap: wrap; gap: 6px; }
+.jx-mini { height: 28px; padding: 0 10px !important; border-radius: 999px; background: var(--muted) !important; font-size: 12.5px; font-weight: 500; color: var(--text-2) !important; transition: background .12s, color .12s; }
+.jx-mini.is-on { background: var(--accent) !important; color: #fff !important; }
+.jx-sheet__actions .jx-btn--ghost:not(.jx-btn--danger) { padding: 0 20px; }
