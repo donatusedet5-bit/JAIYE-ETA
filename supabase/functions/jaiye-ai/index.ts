@@ -2,7 +2,9 @@
 // The Groq key lives only here, as the GROQ_API_KEY secret. Signed-in users only (JWT checked by Supabase).
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const KEY = Deno.env.get("GROQ_API_KEY") ?? "";
+// trim spaces, line breaks and quotes that often come along when a key is pasted
+const KEY = (Deno.env.get("GROQ_API_KEY") ?? "").trim().replace(/^["']|["']$/g, "").trim();
+const KEY_SHAPE = `gsk_prefix=${KEY.startsWith("gsk_")} length=${KEY.length}`;   // safe to log, never the key itself
 const MODEL = Deno.env.get("GROQ_MODEL") ?? "llama-3.3-70b-versatile";
 const STT_MODEL = Deno.env.get("GROQ_STT_MODEL") ?? "whisper-large-v3-turbo";
 const GROQ = "https://api.groq.com/openai/v1";
@@ -59,7 +61,7 @@ async function parse(req: Request, body: Record<string, unknown>) {
       ],
     }),
   });
-  if (!r.ok) return json(req, { error: "ai_failed", status: r.status }, 502);
+  if (!r.ok) { console.error("groq parse", r.status, KEY_SHAPE, MODEL, (await r.text()).slice(0, 200)); return json(req, { error: "ai_failed", status: r.status }, 502); }
   const data = await r.json();
   let out: { items?: unknown[] } = {};
   try { out = JSON.parse(data.choices?.[0]?.message?.content ?? "{}"); } catch { return json(req, { error: "bad_ai_reply" }, 502); }
@@ -93,7 +95,7 @@ async function transcribe(req: Request) {
   fd.append("response_format", "json");
   fd.append("temperature", "0");
   const r = await fetch(`${GROQ}/audio/transcriptions`, { method: "POST", headers: { Authorization: `Bearer ${KEY}` }, body: fd });
-  if (!r.ok) return json(req, { error: "stt_failed", status: r.status }, 502);
+  if (!r.ok) { console.error("groq stt", r.status, KEY_SHAPE, STT_MODEL, (await r.text()).slice(0, 200)); return json(req, { error: "stt_failed", status: r.status }, 502); }
   const data = await r.json();
   return json(req, { text: String(data.text ?? "").trim().slice(0, 600) });
 }
