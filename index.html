@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Jaiye — enjoy life, Jaiye keeps track</title>
+    <meta name="description" content="Money, meals, meetings, calls and sleep in one app. Say it once and Jaiye files the rest." />
+    <meta name="theme-color" content="#F4F5F7" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Jaiye" />
+    <meta property="og:title" content="Jaiye — enjoy life, Jaiye keeps track" />
+    <meta property="og:description" content="Say it once and it lands in the right place." />
+    <meta property="og:image" content="/icons/og.png" />
+    <script>
+      try { var t = localStorage.getItem('jaiye-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.dataset.theme = t; } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

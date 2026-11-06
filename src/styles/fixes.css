@@ -1,0 +1,19 @@
+.float--0 { top: -4%; left: -10%; }
+@media (max-width: 640px) { .float--0 { top: -3%; left: 0; } }
+
+/* country / currency picker */
+.cur { position: relative; }
+.cur__btn { height: 42px; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border-radius: 21px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-weight: 500; font-size: 14px; transition: transform .12s, background .2s; }
+.cur__btn:active { transform: scale(.96); }
+.cur__btn svg { transition: transform .3s var(--spring); }
+.cur.is-open .cur__btn svg { transform: rotate(180deg); }
+.nav:not(.is-solid) .cur__btn { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.3); color: #fff; }
+.cur__flag { font-size: 17px; line-height: 1; }
+.cur__list { position: absolute; right: 0; top: calc(100% + 8px); width: 280px; max-height: min(420px, 70vh); overflow: auto; margin: 0; padding: 6px; list-style: none; border-radius: 20px; background: var(--surface); color: var(--text); box-shadow: var(--shadow-float), 0 0 0 1px var(--border); opacity: 0; transform: translateY(-6px) scale(.97); transform-origin: top right; pointer-events: none; transition: opacity .2s var(--ease-out), transform .3s var(--spring); z-index: 70; }
+.cur.is-open .cur__list { opacity: 1; transform: none; pointer-events: auto; }
+.cur__list button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 0; border-radius: 14px; background: none; cursor: pointer; text-align: left; font-size: 14.5px; }
+.cur__list button:hover { background: var(--muted); }
+.cur__list button.is-on { background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+.cur__name { flex: 1; }
+.cur__c { color: var(--text-2); font-size: 13px; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .cur__code { display: none; } .cur__btn { padding: 0 10px; } .cur__list { right: -90px; width: min(280px, calc(100vw - 32px)); } }

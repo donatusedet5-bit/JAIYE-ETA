@@ -1,0 +1,59 @@
+/* Jaiye v2 design tokens — mirror of the Figma "Jaiye v2" collection */
+:root {
+  --page: #F4F5F7; --surface: #FFFFFF; --muted: #F1F3F6;
+  --text: #0F1115; --text-2: #6B7280; --text-soft: #A0A6B1;
+  --border: #E8EAEE; --accent: #2F6BFF; --accent-soft: #DCE7FF;
+  --header-top: #3D78FF; --bar: #0F1115; --bar-icon: #A3A9B4;
+  --success: #16A34A; --danger: #E5484D;
+  --chart-1: #2F6BFF; --chart-2: #F59E0B; --chart-3: #EF6C4A; --chart-4: #22A06B; --chart-track: #EEF0F4;
+  --tag-money-bg: #E3ECFF; --tag-money-fg: #2450D8;
+  --tag-meeting-bg: #EEE6FF; --tag-meeting-fg: #6B3FD6;
+  --tag-call-bg: #DDF5E7; --tag-call-fg: #157A44;
+  --tag-meals-bg: #FFF0D6; --tag-meals-fg: #9A5B00;
+  --tag-tasks-bg: #FFE5DC; --tag-tasks-fg: #C2410C;
+  --tag-sleep-bg: #E4E7FF; --tag-sleep-fg: #3B45C4;
+  --tag-reminder-bg: #FFE4EF; --tag-reminder-fg: #BE185D;
+  --shadow-card: 0 1px 2px rgba(15,17,21,.04), 0 12px 32px rgba(30,50,120,.08);
+  --shadow-float: 0 18px 40px rgba(25,45,115,.16);
+  --ease-out: cubic-bezier(.22,.8,.24,1);
+  --spring: cubic-bezier(.34,1.4,.5,1);
+  --font: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+[data-theme='dark'] {
+  --page: #0B0C0F; --surface: #16181D; --muted: #20232A;
+  --text: #F3F4F6; --text-2: #9CA3AF; --text-soft: #6B7280;
+  --border: #262A31; --accent: #4D82FF; --accent-soft: #1A2647;
+  --header-top: #17295C; --bar: #22252C; --bar-icon: #9CA3AF;
+  --success: #22C55E; --danger: #FF6369;
+  --chart-1: #4D82FF; --chart-2: #FBBF24; --chart-3: #FF8A6B; --chart-4: #34D399; --chart-track: #23262D;
+  --tag-money-bg: #1A2647; --tag-money-fg: #8FB0FF;
+  --tag-meeting-bg: #2A2145; --tag-meeting-fg: #C3A8FF;
+  --tag-call-bg: #15301F; --tag-call-fg: #6EE7A0;
+  --tag-meals-bg: #33270F; --tag-meals-fg: #FBBF5A;
+  --tag-tasks-bg: #3A2218; --tag-tasks-fg: #FF9F7A;
+  --tag-sleep-bg: #1E2246; --tag-sleep-fg: #A5B0FF;
+  --tag-reminder-bg: #3A1726; --tag-reminder-fg: #FF8DBA;
+  --shadow-card: 0 1px 2px rgba(0,0,0,.3);
+  --shadow-float: 0 18px 40px rgba(0,0,0,.45);
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--font); background: var(--page); color: var(--text); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; transition: background .3s, color .3s; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+
+.tag { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 12px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+.tag.money { background: var(--tag-money-bg); color: var(--tag-money-fg); }
+.tag.meeting { background: var(--tag-meeting-bg); color: var(--tag-meeting-fg); }
+.tag.call { background: var(--tag-call-bg); color: var(--tag-call-fg); }
+.tag.meals { background: var(--tag-meals-bg); color: var(--tag-meals-fg); }
+.tag.tasks { background: var(--tag-tasks-bg); color: var(--tag-tasks-fg); }
+.tag.sleep { background: var(--tag-sleep-bg); color: var(--tag-sleep-fg); }
+.tag.reminder { background: var(--tag-reminder-bg); color: var(--tag-reminder-fg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .15s !important; }
+}
