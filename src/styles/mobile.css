@@ -1,0 +1,80 @@
+/* Phone fixes for the landing page. Loaded after the landing styles so these win.
+   Only touches small screens; desktop stays exactly as it was. */
+
+html, body { overflow-x: clip; }
+
+@media (max-width: 960px) {
+  /* Reveals: quick and light on phones (no blur, small lift) so nothing sits blank. */
+  [data-reveal] { filter: none !important; transform: translateY(14px); transition: opacity .45s var(--ease-out), transform .55s var(--ease-out) !important; transition-delay: 0s !important; }
+  [data-reveal].is-in { transform: none; }
+}
+
+@media (max-width: 640px) {
+
+  /* Top bar: compact, nothing squeezed */
+  .nav__in { height: 60px; gap: 8px; }
+  .nav__end { gap: 6px; }
+  .nav .btn { height: 40px; padding: 0 14px; font-size: 14px; }
+  .nav .icon-btn { width: 38px; height: 38px; }
+  .cur__btn { height: 38px; padding: 0 9px; font-size: 13px; }
+  .nav .lockup { font-size: 19px; }
+
+  /* Hero: fits the first screen, phone peeks in underneath */
+  .hero { padding: 82px 0 8px; }
+  .hero__in { gap: 18px; }
+  .hero h1 { font-size: clamp(36px, 10.6vw, 44px); line-height: 1.04; letter-spacing: -0.045em; }
+  .hero .lead { font-size: 16px; }
+  .hero__copy .app-icon { width: 60px !important; height: 60px !important; }
+  .hero__cta { margin-top: 22px; gap: 10px; }
+  .hero__cta .btn { height: 52px; }
+  .hero__proof { margin-top: 18px; gap: 12px; font-size: 13px; }
+  .hero__visual { height: 420px; padding: 6px 0 0; clip-path: inset(-80px -80px 0 -80px); -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
+  .hero__visual .tilt { zoom: .86; }
+  .blob--a { width: 380px; height: 380px; }
+  .blob--b { width: 340px; height: 340px; }
+  .blob--c { width: 280px; height: 280px; }
+
+  /* Sections: less air between them, headings that fit */
+  .sec { padding: 52px 0; }
+  .sec--tight { padding: 40px 0; }
+  .head { margin-bottom: 26px; }
+  .sec h2, .cta h2 { font-size: clamp(26px, 7.6vw, 30px); line-height: 1.1; letter-spacing: -0.035em; }
+  .mq { padding-block: 6px; }
+
+  /* How it works + the Tell Jaiye demo */
+  .steps3 { gap: 18px; }
+  .split { gap: 26px; }
+  .demo, .demo__sheet { height: auto !important; min-height: 300px !important; }
+  .demo__sheet { padding: 16px !important; }
+
+  /* Stats */
+  .stats { gap: 10px; }
+  .stat { padding: 16px !important; }
+
+  /* Feature cards */
+  .bento { gap: 12px; }
+  .bento__card { padding: 16px !important; gap: 14px; }
+  .show__stage { min-height: 0 !important; padding: 14px !important; }
+  .show__vis { max-width: 100%; overflow: hidden; }
+  .cz__seg button { min-height: 38px; }
+
+  /* Day timeline, Google sync, trio */
+  .day { gap: 12px; }
+  .sync { padding: 20px !important; }
+  .sync__orbit { transform: scale(.86); }
+  .trio { gap: 10px; }
+  .trio__item { padding: 16px !important; }
+
+  /* Install guide */
+  .inst { padding: 18px !important; gap: 26px; }
+
+  /* FAQ + closing */
+  .faq { gap: 8px; }
+  .cta { padding: 40px 18px !important; }
+  .foot { padding-block: 28px; }
+}
+
+@media (max-width: 380px) {
+  .nav .btn { padding: 0 11px; font-size: 13.5px; }
+  .hero h1 { font-size: 34px; }
+}

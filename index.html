@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Jaiye — enjoy life, Jaiye keeps track</title>
     <meta name="description" content="Money, meals, meetings, calls and sleep in one app. Say it once and Jaiye files the rest." />
-    <meta name="theme-color" content="#F4F5F7" />
+    <meta name="theme-color" content="#2F6BFF" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" type="image/png" href="/icons/icon-192.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
@@ -18,8 +18,46 @@
     <script>
       try { var t = localStorage.getItem('jaiye-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.dataset.theme = t; } catch (e) {}
     </script>
+    <style>
+      /* Logo cover: the first thing you see when Jaiye opens. */
+      #jx-cover { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; background: linear-gradient(160deg, #6A97FF 0%, #2F6BFF 48%, #1E46D6 100%); color: #fff; font-family: 'Geist Variable', system-ui, -apple-system, sans-serif; transition: opacity .5s ease, visibility .5s; }
+      [data-theme='dark'] #jx-cover { background: linear-gradient(160deg, #3D6BE0 0%, #1E46D6 50%, #122C8C 100%); }
+      #jx-cover .c-in { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+      #jx-cover svg { width: 132px; height: 132px; overflow: visible; filter: drop-shadow(0 18px 30px rgba(10, 30, 120, .35)); }
+      #jx-cover .c-tail { stroke-dasharray: 1; stroke-dashoffset: 1; animation: c-draw .7s cubic-bezier(.22, .8, .24, 1) .1s forwards; }
+      #jx-cover .c-dot { transform-origin: 64px 18px; transform: scale(0); animation: c-pop .5s cubic-bezier(.34, 1.5, .5, 1) .62s forwards; }
+      #jx-cover b { font-size: 34px; font-weight: 600; letter-spacing: -.045em; opacity: 0; animation: c-up .5s cubic-bezier(.22, .8, .24, 1) .78s forwards; }
+      #jx-cover small { font-size: 15px; opacity: 0; color: rgba(255, 255, 255, .82); animation: c-up .5s cubic-bezier(.22, .8, .24, 1) .9s forwards; }
+      #jx-cover.out { opacity: 0; visibility: hidden; }
+      #jx-cover.out .c-in { transform: scale(1.08); transition: transform .5s ease; }
+      @keyframes c-draw { to { stroke-dashoffset: 0; } }
+      @keyframes c-pop { to { transform: scale(1); } }
+      @keyframes c-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) { #jx-cover * { animation-duration: .01ms !important; animation-delay: 0s !important; } }
+    </style>
   </head>
   <body>
+    <div id="jx-cover" aria-hidden="true">
+      <div class="c-in">
+        <svg viewBox="0 0 100 100" fill="none"><circle class="c-dot" cx="64" cy="18" r="10.5" fill="#fff" /><path class="c-tail" d="M64 40V80L36 58" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" pathLength="1" /></svg>
+        <b>jaiye</b>
+        <small>Enjoy life. Jaiye keeps track.</small>
+      </div>
+    </div>
+    <script>
+      // Show the cover every time the app opens, and once per visit on the landing page.
+      (function () {
+        var c = document.getElementById('jx-cover');
+        var app = location.pathname.indexOf('/app') === 0, seen = false;
+        try { seen = !app && sessionStorage.getItem('jaiye-cover') === '1'; sessionStorage.setItem('jaiye-cover', '1'); } catch (e) {}
+        if (seen) { c.remove(); return; }
+        var quick = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var t0 = Date.now(), min = quick ? 300 : 1500;
+        function hide() { var wait = Math.max(0, min - (Date.now() - t0)); setTimeout(function () { c.classList.add('out'); setTimeout(function () { c.remove(); }, 600); }, wait); }
+        if (document.readyState === 'complete') hide(); else window.addEventListener('load', hide);
+        setTimeout(hide, 3500);
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

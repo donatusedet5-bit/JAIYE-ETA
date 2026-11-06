@@ -1,5 +1,5 @@
 // Jaiye service worker: cache the app shell so it opens offline.
-const CACHE = 'jaiye-v1';
+const CACHE = 'jaiye-v2';
 const SHELL = ['/', '/app', '/manifest.webmanifest', '/icons/icon-192.png'];
 
 self.addEventListener('install', (e) => {
@@ -12,10 +12,15 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
   if (req.mode === 'navigate') {
-    e.respondWith(fetch(req).catch(() => caches.match('/app').then((r) => r || caches.match('/'))));
+    // Fresh page when online (and keep a copy); cached shell when offline.
+    e.respondWith(fetch(req).then((res) => {
+      const copy = res.clone(); caches.open(CACHE).then((c) => c.put('/app', copy));
+      return res;
+    }).catch(() => caches.match('/app').then((r) => r || caches.match('/'))));
     return;
   }
   e.respondWith(caches.match(req).then((hit) => hit || fetch(req).then((res) => {
-    const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); return res;
+    if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
+    return res;
   })));
 });

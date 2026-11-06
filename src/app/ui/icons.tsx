@@ -1,0 +1,37 @@
+type P = { size?: number; className?: string };
+const S = ({ size = 20, className, children }: P & { children: React.ReactNode }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">{children}</svg>
+);
+
+export const IHome = (p: P) => <S {...p}><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z" /></S>;
+export const ICal = (p: P) => <S {...p}><rect x="4" y="5.5" width="16" height="14.5" rx="3" /><path d="M8 3.5v4M16 3.5v4M4 10h16" /></S>;
+export const IWallet = (p: P) => <S {...p}><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3" /><rect x="4" y="8" width="16" height="11.5" rx="2.5" /><path d="M15.5 13.75h1.5" /></S>;
+export const ITasks = (p: P) => <S {...p}><rect x="4.5" y="4.5" width="15" height="15" rx="3.5" /><path d="m8.5 12.2 2.4 2.3 4.6-4.8" /></S>;
+export const ISend = (p: P) => <S {...p}><path d="M5 12h12.5M12.5 6.5 18 12l-5.5 5.5" strokeWidth="2.3" /></S>;
+export const IPlus = (p: P) => <S {...p}><path d="M12 5v14M5 12h14" /></S>;
+export const IMic = (p: P) => <S {...p}><rect x="9" y="3.5" width="6" height="11" rx="3" /><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.5" /></S>;
+export const ICamera = (p: P) => <S {...p}><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z" /><circle cx="12" cy="12.5" r="3.5" /></S>;
+export const IBack = (p: P) => <S {...p}><path d="m14.5 6-6 6 6 6" /></S>;
+export const IClose = (p: P) => <S {...p}><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" /></S>;
+export const ICheck = (p: P) => <S {...p}><path d="m5.5 12.5 4.2 4 8.8-9" strokeWidth="2.4" /></S>;
+export const ISun = (p: P) => <S {...p}><circle cx="12" cy="12" r="3.8" /><path d="M12 3v1.8M12 19.2V21M3 12h1.8M19.2 12H21M5.6 5.6l1.3 1.3M17.1 17.1l1.3 1.3M5.6 18.4l1.3-1.3M17.1 6.9l1.3-1.3" /></S>;
+export const IMoon = (p: P) => <S {...p}><path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z" /></S>;
+export const IBell = (p: P) => <S {...p}><path d="M6.5 16.5V11a5.5 5.5 0 0 1 11 0v5.5l1.5 1.5H5z" /><path d="M10 20.5a2.2 2.2 0 0 0 4 0" /></S>;
+export const ILock = (p: P) => <S {...p}><rect x="5" y="10.5" width="14" height="9.5" rx="2.5" /><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" /></S>;
+export const IEye = (p: P) => <S {...p}><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="2.8" /></S>;
+export const IMail = (p: P) => <S {...p}><rect x="3.5" y="5.5" width="17" height="13" rx="2.5" /><path d="m4.5 7 7.5 6 7.5-6" /></S>;
+export const IUser = (p: P) => <S {...p}><circle cx="12" cy="8.5" r="3.8" /><path d="M4.8 20a7.2 7.2 0 0 1 14.4 0" /></S>;
+export const IPhone = (p: P) => <S {...p}><path d="M6.5 4h2.6l1.4 3.8-1.9 1.3a10 10 0 0 0 6.3 6.3l1.3-1.9L20 15v2.6a2 2 0 0 1-2.2 2A15.7 15.7 0 0 1 4.4 6.2 2 2 0 0 1 6.5 4z" /></S>;
+export const IVideo = (p: P) => <S {...p}><rect x="3.5" y="6.5" width="12" height="11" rx="2.5" /><path d="m15.5 10.5 5-3v9l-5-3" /></S>;
+export const IMeal = (p: P) => <S {...p}><path d="M4 13h16a8 8 0 0 1-16 0z" /><path d="M9 4.5c0 1.5 1.2 1.5 1.2 3S9 9 9 10M13.5 4.5c0 1.5 1.2 1.5 1.2 3s-1.2 1.5-1.2 2.5" /></S>;
+export const ISpark = (p: P) => <S {...p}><path d="M12 3.5 13.8 10 20.5 12l-6.7 2L12 20.5 10.2 14 3.5 12l6.7-2z" /></S>;
+export const ISync = (p: P) => <S {...p}><path d="M19.5 9A8 8 0 0 0 5 7.5M4.5 15A8 8 0 0 0 19 16.5" /><path d="M5 3.5v4h4M19 20.5v-4h-4" /></S>;
+export const IOffline = (p: P) => <S {...p}><path d="M3 3l18 18M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 4-2.4M19 13a10 10 0 0 0-3.4-2.1M2 9.5a15 15 0 0 1 4.5-2.8M22 9.5A15 15 0 0 0 11 5.6" /><circle cx="12" cy="19.5" r=".6" fill="currentColor" /></S>;
+export const IArrowUR = (p: P) => <S {...p}><path d="M7.5 16.5 16.5 7.5M9 7.5h7.5V15" /></S>;
+export const ITrash = (p: P) => <S {...p}><path d="M4.5 7h15M9.5 7V5h5v2M6.5 7l1 13h9l1-13" /></S>;
+export const ITrendDown = (p: P) => <S {...p}><path d="m3.5 7.5 6 6 4-4 7 7M20.5 11.5v5h-5" /></S>;
+export const ILogout = (p: P) => <S {...p}><path d="M14 4.5H6.5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1H14M10 12h10M16.5 8.5 20 12l-3.5 3.5" /></S>;
+export const INote = (p: P) => <S {...p}><path d="M6 4h9l4 4v12H6z" /><path d="M14.5 4v4.5H19M9 13h6M9 16.5h4" /></S>;
+export const IBed = (p: P) => <S {...p}><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14" /><circle cx="7.3" cy="11.2" r="1.7" /></S>;
+export const IHabit = (p: P) => <S {...p}><path d="M12 20.5c4 0 6.5-2.6 6.5-6.2 0-3.6-3-5.6-3.8-9.3-1.7 1.4-2.5 3.3-2.6 5-1.2-.9-1.9-2-2-3.1C8 8.4 5.5 10.7 5.5 14.3c0 3.6 2.5 6.2 6.5 6.2z" /></S>;
+export const IChevron = (p: P) => <S {...p}><path d="m9.5 6 6 6-6 6" /></S>;

@@ -1,0 +1,6 @@
+/* App loading screen = the logo cover from index.html, so opening the app is one smooth blue screen. */
+.jx-boot, .jx-bootscreen { background: linear-gradient(160deg, #6A97FF 0%, #2F6BFF 48%, #1E46D6 100%) !important; }
+[data-theme='dark'] .jx-boot, [data-theme='dark'] .jx-bootscreen { background: linear-gradient(160deg, #3D6BE0 0%, #1E46D6 50%, #122C8C 100%) !important; }
+.jx-bootscreen svg { width: 132px; height: 132px; filter: drop-shadow(0 18px 30px rgba(10, 30, 120, .35)); animation: jx-cover-pulse 1.6s ease-in-out infinite; }
+@keyframes jx-cover-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(.95); } }
+@media (prefers-reduced-motion: reduce) { .jx-bootscreen svg { animation: none; } }
