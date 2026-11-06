@@ -21,7 +21,7 @@ export default function MeSheet({ onClose }: { onClose: () => void }) {
   const file = useRef<HTMLInputElement>(null);
 
   useEffect(() => { supabase.auth.getSession().then(({ data }) => setEmail(data.session?.user.email ?? '')); }, []);
-  const close = () => { if (name.trim() && name !== p.name) void saveProfile({ name: name.trim() }); setClosing(true); setTimeout(onClose, 220); };
+  const close = () => { if (name.trim() && name !== p.name) void saveProfile({ name: name.trim() }); setClosing(true); setTimeout(onClose, 160); };
 
   async function logout() {
     const warn = pending ? `${pending} change${pending > 1 ? 's haven’t' : ' hasn’t'} synced yet and will be lost. Log out anyway?` : 'Log out of Jaiye on this phone?';

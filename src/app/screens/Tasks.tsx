@@ -2,13 +2,15 @@ import { useMemo, useState } from 'react';
 import { updateItem, useStore } from '../store';
 import type { ShellApi } from '../Shell';
 import { Empty, SyncLine } from '../ui/bits';
-import { ICheck, IPlus, ITasks } from '../ui/icons';
+import { IBack, ICheck, IPlus, ITasks } from '../ui/icons';
+import { useNavigate } from 'react-router-dom';
 import { sameDay, time } from '../format';
 import type { Item } from '../types';
 
 export default function Tasks({ api }: { api: ShellApi }) {
   const items = useStore(s => s.items);
   const [showDone, setShowDone] = useState(false);
+  const nav = useNavigate();
   const { open, done } = useMemo(() => {
     const t = items.filter(i => i.kind === 'task' || i.kind === 'reminder');
     const byWhen = (a: Item, b: Item) => (a.at ?? '9999').localeCompare(b.at ?? '9999') || b.created_at.localeCompare(a.created_at);
@@ -18,7 +20,10 @@ export default function Tasks({ api }: { api: ShellApi }) {
   return (
     <div className="jx-content jx-content--top">
       <div className="jx-titlebar">
-        <div><h1 className="jx-title">Tasks</h1><SyncLine /></div>
+        <div className="jx-titlebar__back">
+          <button className="jx-iconbtn" aria-label="Back to More" onClick={() => nav('/app/more')}><IBack size={18} /></button>
+          <div><h1 className="jx-title">Tasks</h1><SyncLine /></div>
+        </div>
         <button className="jx-roundbtn" aria-label="Add a task" onClick={() => api.tell({ kind: 'task' })}><IPlus size={19} /></button>
       </div>
       {open.length ? (
@@ -38,7 +43,7 @@ export default function Tasks({ api }: { api: ShellApi }) {
   );
 }
 
-function TaskRow({ i, api }: { i: Item; api: ShellApi }) {
+export function TaskRow({ i, api }: { i: Item; api: ShellApi }) {
   const late = !i.done && i.at && new Date(i.at) < new Date();
   return (
     <div className={'jx-li jx-task' + (i.done ? ' is-done' : '')}>

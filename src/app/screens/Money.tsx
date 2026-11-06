@@ -29,7 +29,7 @@ export default function Money({ api }: { api: ShellApi }) {
     <div className="jx-content jx-content--top">
       <div className="jx-titlebar">
         <div><h1 className="jx-title">Money</h1><SyncLine /></div>
-        <button className="jx-roundbtn" aria-label="Log money" onClick={() => api.tell({ kind: 'money' })}><IPlus size={19} /></button>
+        <button className="jx-roundbtn" aria-label="Write it out in Tell Jaiye" onClick={() => api.tell({ kind: 'money' })}><ISpark size={18} /></button>
       </div>
 
       <div className="jx-card jx-left jx-rise">
@@ -43,9 +43,11 @@ export default function Money({ api }: { api: ShellApi }) {
         )}
       </div>
 
+      <button className="jx-btn jx-btn--primary jx-btn--block jx-logbtn" onClick={api.money}><IPlus size={20} /> Log money</button>
+
       <div className="jx-boxes">
         {[{ k: 'Income', v: m.income, c: 'ok' }, { k: 'Spent', v: m.spent, c: '' }, { k: 'Saved', v: m.saved, c: 'blue' }].map((b, i) => (
-          <div key={b.k} className={'jx-card jx-box jx-rise jx-box--' + (b.c || 'plain')} style={{ animationDelay: `${60 + i * 40}ms` }}>
+          <div key={b.k} className={'jx-card jx-box jx-rise jx-box--' + (b.c || 'plain')} style={{ animationDelay: `${i * 25}ms` }}>
             <small>{b.k}</small>
             <b><Amount n={b.v} currency={p.currency} /></b>
           </div>
@@ -54,11 +56,11 @@ export default function Money({ api }: { api: ShellApi }) {
 
       <div className="jx-sechead"><h2 className="jx-h3">Logged this month</h2></div>
       {m.list.length ? (
-        <div className="jx-card jx-list jx-rise" style={{ animationDelay: '140ms' }}>
+        <div className="jx-card jx-list jx-rise" style={{ animationDelay: '60ms' }}>
           {m.list.map(i => (
             <button key={i.id} className="jx-li" onClick={() => api.edit(i)}>
               <span className="jx-row__icon">{i.source === 'typed' ? <ISpark size={15} /> : <IWallet size={15} />}</span>
-              <span className="jx-li__txt"><b>{i.title}</b><small>{new Date(i.at!).toLocaleDateString('en', { day: 'numeric', month: 'short' })}</small></span>
+              <span className="jx-li__txt"><b>{i.title}</b><small>{typeof i.data.category === 'string' && i.data.category !== i.title ? i.data.category + ' · ' : ''}{new Date(i.at!).toLocaleDateString('en', { day: 'numeric', month: 'short' })}</small></span>
               <Amount n={i.amount!} currency={p.currency} sign className={'jx-li__amt' + (i.amount! > 0 ? ' is-in' : '')} />
             </button>
           ))}

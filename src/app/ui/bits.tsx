@@ -14,6 +14,8 @@ export const KIND: Record<Kind, { label: string; tag: string; Icon: (p: { size?:
   reminder: { label: 'Reminder', tag: 'reminder', Icon: IBell },
   note: { label: 'Note', tag: 'note', Icon: INote },
   habit: { label: 'Habit', tag: 'meals', Icon: IHabit },
+  grocery: { label: 'Grocery', tag: 'meals', Icon: IMeal },
+  pantry: { label: 'Pantry', tag: 'meals', Icon: IMeal },
 };
 
 export function Tag({ kind, children }: { kind: Kind; children?: ReactNode }) {
@@ -60,7 +62,7 @@ export function Count({ value, render }: { value: number; render: (n: number) =>
     const a = from.current, b = value, t0 = performance.now();
     let raf = 0;
     const step = (t: number) => {
-      const k = Math.min(1, (t - t0) / 650), e = 1 - Math.pow(1 - k, 3);
+      const k = Math.min(1, (t - t0) / 450), e = 1 - Math.pow(1 - k, 3);
       setShown(a + (b - a) * e);
       if (k < 1) raf = requestAnimationFrame(step); else from.current = b;
     };

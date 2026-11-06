@@ -35,7 +35,7 @@ export default function TellSheet({ init, onClose, onSaved }: { init: TellInit; 
   }, [text, picked, editing]);
   useEffect(() => { const k = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); }; window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k); });
 
-  function close() { setClosing(true); setTimeout(onClose, 220); }
+  function close() { setClosing(true); setTimeout(onClose, 160); }
 
   async function save() {
     const title = text.trim();

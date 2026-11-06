@@ -60,9 +60,9 @@ function SayDemo() {
   useEffect(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { setN(LINE.length); setPhase(2); return; }
     let t: number;
-    if (n < LINE.length && phase === 0) t = window.setTimeout(() => setN(n + 1), 45);
-    else if (phase === 0) t = window.setTimeout(() => setPhase(1), 350);
-    else if (phase === 1) t = window.setTimeout(() => setPhase(2), 450);
+    if (n < LINE.length && phase === 0) t = window.setTimeout(() => setN(n + 1), 28);
+    else if (phase === 0) t = window.setTimeout(() => setPhase(1), 200);
+    else if (phase === 1) t = window.setTimeout(() => setPhase(2), 250);
     else t = window.setTimeout(() => { setN(0); setPhase(0); }, 3200);
     return () => clearTimeout(t);
   }, [n, phase]);
@@ -123,11 +123,11 @@ function Account({ mode, setMode, onBack }: { mode: 'signup' | 'login'; setMode:
           <h1 className="jx-h1" style={{ marginTop: 18 }}>{signup ? <>Make your <span className="jx-soft">Jaiye</span> account</> : <>Welcome <span className="jx-soft">back</span></>}</h1>
           <p className="jx-sub">{signup ? 'So your things are safe on every phone.' : 'Log in to pick up where you left off.'}</p>
         </div>
-        <label className="jx-field jx-rise" style={{ animationDelay: '60ms' }}>
+        <label className="jx-field jx-rise" style={{ animationDelay: '25ms' }}>
           <span>Email</span>
           <input type="email" inputMode="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@example.com" />
         </label>
-        <label className="jx-field jx-rise" style={{ animationDelay: '110ms' }}>
+        <label className="jx-field jx-rise" style={{ animationDelay: '50ms' }}>
           <span>Password</span>
           <input type="password" autoComplete={signup ? 'new-password' : 'current-password'} required minLength={8} value={password} onChange={e => setPassword(e.target.value)} placeholder="At least 8 characters" />
         </label>

@@ -108,7 +108,7 @@ function Tracks({ p, set }: SP) {
         {TRACKS.map(({ id, label, Icon, tag }, i) => {
           const on = p.tracks.includes(id);
           return (
-            <button key={id} type="button" aria-pressed={on} className={'jx-pick' + (on ? ' is-on' : '')} style={{ animationDelay: `${i * 40}ms` }} onClick={() => toggle(id)}>
+            <button key={id} type="button" aria-pressed={on} className={'jx-pick' + (on ? ' is-on' : '')} style={{ animationDelay: `${i * 25}ms` }} onClick={() => toggle(id)}>
               <span className={`jx-pick__icon jx-tag--${tag}`}><Icon size={17} /></span>
               <span className="jx-pick__check">{on && <ICheck size={12} />}</span>
               <b>{label}</b>
@@ -182,7 +182,7 @@ function Connect() {
       <p className="jx-sub">Meetings, calls and bank alerts, filled in for you.</p>
       <div className="jx-stack">
         {rows.map(({ Icon, name, sub, on }, i) => (
-          <div key={name} className="jx-card jx-conn jx-rise" style={{ animationDelay: `${i * 50}ms` }}>
+          <div key={name} className="jx-card jx-conn jx-rise" style={{ animationDelay: `${i * 25}ms` }}>
             <span className="jx-row__icon jx-row__icon--blue"><Icon size={17} /></span>
             <span className="jx-conn__txt"><b>{name}</b><small>{sub}</small></span>
             {on ? <span className="jx-pill jx-pill--ok"><ICheck size={11} /> On</span> : <span className="jx-pill">Soon</span>}

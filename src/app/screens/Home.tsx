@@ -2,11 +2,12 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import type { ShellApi } from '../Shell';
-import { greeting, sameDay, startOfWeek, time } from '../format';
+import { greeting, sameDay, startOfWeek, symbol, time } from '../format';
+import { TaskRow } from './Tasks';
 import { useAppTheme } from '../ui/theme';
 import { AppMark } from '../ui/Mark';
 import { Amount, Avatar, Empty, KIND, Tag } from '../ui/bits';
-import { IArrowUR, ICal, IMoon, IPlus, ISend, ISun, ITrendDown } from '../ui/icons';
+import { IArrowUR, ICal, IMoon, IPlus, ISend, ISun, ITasks, ITrendDown } from '../ui/icons';
 
 export default function Home({ api }: { api: ShellApi }) {
   const p = useStore(s => s.profile)!;
@@ -19,6 +20,9 @@ export default function Home({ api }: { api: ShellApi }) {
   const today = items.filter(i => i.at && sameDay(new Date(i.at), now));
   const nTasks = items.filter(i => i.kind === 'task' && !i.done && (!i.at || new Date(i.at) <= endOfDay(now))).length;
   const nMeet = today.filter(i => i.kind === 'meeting').length;
+  const todayTasks = useMemo(() => items
+    .filter(i => (i.kind === 'task' || i.kind === 'reminder') && !i.done && (!i.at || new Date(i.at) <= endOfDay(new Date())))
+    .sort((a, b) => (a.at ?? '9999').localeCompare(b.at ?? '9999')), [items]);
   const sub = [nTasks && `${nTasks} task${nTasks > 1 ? 's' : ''}`, nMeet && `${nMeet} meeting${nMeet > 1 ? 's' : ''} today`].filter(Boolean).join(', ') || 'Nothing due today';
 
   const upNext = useMemo(() => items
@@ -58,6 +62,7 @@ export default function Home({ api }: { api: ShellApi }) {
           </div>
           <form className="jx-capture__bar" onSubmit={e => { e.preventDefault(); send(); }}>
             <button type="button" className="jx-capture__plus" aria-label="Add" onClick={() => api.tell()}><IPlus size={17} /></button>
+            <button type="button" className="jx-capture__plus jx-capture__money" aria-label="Log money" onClick={api.money}>{symbol(p.currency)}</button>
             <input value={draft} onChange={e => setDraft(e.target.value)} placeholder="Tell Jaiye anything" aria-label="Tell Jaiye anything" maxLength={300} />
             <button className="jx-sendsm" aria-label="Tell Jaiye"><ISend size={16} /></button>
           </form>
@@ -66,7 +71,7 @@ export default function Home({ api }: { api: ShellApi }) {
 
       <div className="jx-content">
         {p.tracks.includes('money') && (
-          <button className="jx-card jx-spent jx-rise" style={{ animationDelay: '60ms' }} onClick={() => nav('/app/money')}>
+          <button className="jx-card jx-spent jx-rise" style={{ animationDelay: '20ms' }} onClick={() => nav('/app/money')}>
             <div className="jx-spent__top">
               <span><small>Spent this week</small><b className="jx-big"><Amount n={week.total} currency={p.currency} /></b></span>
               {week.last > 0 && week.total > 0 && (
@@ -79,9 +84,19 @@ export default function Home({ api }: { api: ShellApi }) {
           </button>
         )}
 
+        <div className="jx-sechead"><h2 className="jx-h3">Today {todayTasks.length > 0 && <span className="jx-count">{todayTasks.length} left</span>}</h2><button className="jx-link jx-link--sm" onClick={() => nav('/app/tasks')}>See all</button></div>
+        {todayTasks.length ? (
+          <div className="jx-card jx-list jx-rise" style={{ animationDelay: '30ms' }}>
+            {todayTasks.slice(0, 5).map(i => <TaskRow key={i.id} i={i} api={api} />)}
+            {todayTasks.length > 5 && <button className="jx-li jx-li--more" onClick={() => nav('/app/tasks')}>+{todayTasks.length - 5} more</button>}
+          </div>
+        ) : (
+          <button className="jx-card jx-quick jx-rise" onClick={() => api.tell({ kind: 'task' })}><ITasks size={18} /> Nothing left for today. Add a task</button>
+        )}
+
         <div className="jx-sechead"><h2 className="jx-h3">Up next</h2><button className="jx-link jx-link--sm" onClick={() => nav('/app/calendar')}><ICal size={13} /> Calendar</button></div>
         {upNext.length ? upNext.map((i, k) => (
-          <button key={i.id} className="jx-card jx-next jx-rise" style={{ animationDelay: `${100 + k * 50}ms` }} onClick={() => api.edit(i)}>
+          <button key={i.id} className="jx-card jx-next jx-rise" style={{ animationDelay: `${40 + k * 25}ms` }} onClick={() => api.edit(i)}>
             <div className="jx-next__top"><Tag kind={i.kind} /><span className="jx-next__go"><IArrowUR size={15} /></span></div>
             <b>{i.title}</b>
             <small>{(() => { const I = KIND[i.kind].Icon; return <I size={13} />; })()} {sameDay(new Date(i.at!), now) ? 'Today' : new Date(i.at!).toLocaleDateString('en', { weekday: 'short', day: 'numeric', month: 'short' })}, {time(i.at!)}</small>
@@ -101,7 +116,7 @@ function Bars({ days }: { days: number[] }) {
     <div className="jx-bars" aria-hidden="true">
       {days.map((v, i) => (
         <span key={i} className={'jx-bars__col' + (i === todayIdx ? ' is-today' : '') + (i > todayIdx ? ' is-future' : '')}>
-          <i style={{ height: `${Math.max(8, (v / max) * 100)}%`, animationDelay: `${i * 40}ms` }} />
+          <i style={{ height: `${Math.max(8, (v / max) * 100)}%`, animationDelay: `${i * 20}ms` }} />
           <small>{'MTWTFSS'[i]}</small>
         </span>
       ))}

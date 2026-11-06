@@ -1,4 +1,4 @@
-export type Kind = 'money' | 'meeting' | 'call' | 'meal' | 'task' | 'sleep' | 'reminder' | 'note' | 'habit';
+export type Kind = 'money' | 'meeting' | 'call' | 'meal' | 'task' | 'sleep' | 'reminder' | 'note' | 'habit' | 'grocery' | 'pantry';
 export type Track = 'money' | 'meetings' | 'meals' | 'tasks' | 'sleep' | 'habits';
 
 export type Item = {

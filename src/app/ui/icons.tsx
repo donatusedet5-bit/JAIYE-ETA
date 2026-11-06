@@ -35,3 +35,9 @@ export const INote = (p: P) => <S {...p}><path d="M6 4h9l4 4v12H6z" /><path d="M
 export const IBed = (p: P) => <S {...p}><path d="M3.5 18.5v-11M3.5 14h17v4.5M20.5 14v-2.5a3 3 0 0 0-3-3H11V14" /><circle cx="7.3" cy="11.2" r="1.7" /></S>;
 export const IHabit = (p: P) => <S {...p}><path d="M12 20.5c4 0 6.5-2.6 6.5-6.2 0-3.6-3-5.6-3.8-9.3-1.7 1.4-2.5 3.3-2.6 5-1.2-.9-1.9-2-2-3.1C8 8.4 5.5 10.7 5.5 14.3c0 3.6 2.5 6.2 6.5 6.2z" /></S>;
 export const IChevron = (p: P) => <S {...p}><path d="m9.5 6 6 6-6 6" /></S>;
+export const IMore = (p: P) => <S {...p}><rect x="4.5" y="4.5" width="6" height="6" rx="1.8" /><rect x="13.5" y="4.5" width="6" height="6" rx="1.8" /><rect x="4.5" y="13.5" width="6" height="6" rx="1.8" /><rect x="13.5" y="13.5" width="6" height="6" rx="1.8" /></S>;
+export const IBook = (p: P) => <S {...p}><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4H19v14H6.5A1.5 1.5 0 0 0 5 19.5z" /><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19M9 8h6" /></S>;
+export const IGear = (p: P) => <S {...p}><circle cx="12" cy="12" r="3" /><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M6 18l1.4-1.4M16.6 7.4 18 6" /></S>;
+export const ICart = (p: P) => <S {...p}><path d="M3.5 5h2l2 10h10l2-7H7" /><circle cx="9.5" cy="19" r="1.3" /><circle cx="16.5" cy="19" r="1.3" /></S>;
+export const IBox = (p: P) => <S {...p}><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z" /><path d="M4 8.5 12 13l8-4.5M12 13v7" /></S>;
+export const IToday = (p: P) => <S {...p}><rect x="4" y="5.5" width="16" height="14.5" rx="3" /><path d="M8 3.5v4M16 3.5v4M4 10h16" /><circle cx="12" cy="15" r="1.6" fill="currentColor" /></S>;
