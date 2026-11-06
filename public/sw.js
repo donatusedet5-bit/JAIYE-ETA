@@ -1,5 +1,5 @@
 // Jaiye service worker: cache the app shell so it opens offline.
-const CACHE = 'jaiye-v2';
+const CACHE = 'jaiye-v3';
 const SHELL = ['/', '/app', '/manifest.webmanifest', '/icons/icon-192.png'];
 
 self.addEventListener('install', (e) => {

@@ -78,3 +78,13 @@ html, body { overflow-x: clip; }
   .nav .btn { padding: 0 11px; font-size: 13.5px; }
   .hero h1 { font-size: 34px; }
 }
+
+/* Smoothness on phones: the soft background blobs stay put (moving 60px blurs drop frames
+   on iPhones), the top bar is solid instead of frosted, and text swaps don't blur. */
+@media (max-width: 960px) {
+  .blob { animation: none !important; filter: blur(32px); mix-blend-mode: normal; opacity: .45; }
+  .grain { display: none; }
+  .nav.is-solid { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: var(--page); }
+  @keyframes rotIn { from { opacity: 0; transform: translateY(100%); } }
+  @keyframes swapIn { from { opacity: 0; transform: translateY(10px); } }
+}

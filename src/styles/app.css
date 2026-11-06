@@ -485,3 +485,18 @@ button.jx-li:active { background: var(--muted) !important; }
 .jx-week2__ev { position: absolute; left: 2px; right: 2px; height: 40px; border-radius: 7px; padding: 3px 4px !important; font-size: 10.5px !important; font-weight: 600 !important; line-height: 1.2; text-align: left !important; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; word-break: normal; overflow-wrap: normal; hyphens: auto; z-index: 1; }
 .jx-week2__now { position: absolute; left: 0; right: 0; height: 2px; background: var(--accent); z-index: 2; }
 .jx-week2__now::before { content: ''; position: absolute; left: -3px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+/* ---------- iPhone fixes (6 Nov, round 2) ---------- */
+/* Avatar: a true circle in Safari too. The button around it is reset and sized to match,
+   and the mask makes Safari clip the photo to the circle even while things animate. */
+.jx-hero__me, .jx-me__photo { -webkit-appearance: none; appearance: none; padding: 0 !important; width: max-content; height: max-content; border-radius: 50%; }
+.jx-avatar { box-sizing: border-box; min-width: 0; min-height: 0; max-width: none; isolation: isolate; -webkit-mask-image: -webkit-radial-gradient(white, black); transform: translateZ(0); }
+.jx-avatar img { max-width: none; min-width: 100%; min-height: 100%; aspect-ratio: 1 / 1; }
+.jx-avatar--ring { box-shadow: none; }
+.jx-hero__me { box-shadow: 0 0 0 2px rgba(255,255,255,.85); }
+
+/* Smoothness: no full-screen blur behind sheets (it drops frames on iPhones), and the
+   moving layers get their own GPU layer. */
+.jx-sheet-wrap { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(8,10,18,.42); }
+.jx-glass { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; background: rgba(255,255,255,.2) !important; }
+.jx-sheet, .jx-tabs__pill, .jx-toast { will-change: transform; }
