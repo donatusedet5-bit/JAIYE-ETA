@@ -4,9 +4,10 @@ import { supabase } from '../supabase';
 import { useAppTheme } from '../ui/theme';
 import { clearPin, hasPin } from '../pin';
 import { Avatar, SyncLine, Toggle } from '../ui/bits';
-import { ICamera, IClose, ILogout } from '../ui/icons';
+import { ICamera, IClose, ILogout, IReset } from '../ui/icons';
 import { Line, squareWebp } from './Onboarding';
 import { PinSetup } from './PinLock';
+import ResetSheet from './ResetSheet';
 import { Portal } from '../ui/Portal';
 
 export default function MeSheet({ onClose }: { onClose: () => void }) {
@@ -17,6 +18,7 @@ export default function MeSheet({ onClose }: { onClose: () => void }) {
   const [name, setName] = useState(p.name);
   const [pinOn, setPinOn] = useState(hasPin());
   const [setting, setSetting] = useState(false);
+  const [reset, setReset] = useState(false);
   const [closing, setClosing] = useState(false);
   const file = useRef<HTMLInputElement>(null);
 
@@ -49,10 +51,12 @@ export default function MeSheet({ onClose }: { onClose: () => void }) {
           <Line label="Hide amounts" sub="Tap a number to peek"><Toggle label="Hide amounts" on={!!p.prefs.hideAmounts} onChange={v => saveProfile({ prefs: { hideAmounts: v } })} /></Line>
         </div>
         <div className="jx-group">
+          <button className="jx-row jx-row--btn" onClick={() => setReset(true)}><span className="jx-row__label">Reset Jaiye<small>Clear your entries or start over</small></span><span className="jx-row__val"><IReset size={17} /></span></button>
           <button className="jx-row jx-row--btn" onClick={logout}><span className="jx-row__label jx-danger">Log out</span><span className="jx-row__val jx-danger"><ILogout size={17} /></span></button>
         </div>
       </div>
     </div></Portal>
+    {reset && <ResetSheet onClose={() => setReset(false)} onDone={() => { setReset(false); onClose(); }} />}
     {setting && <PinSetup onClose={() => setSetting(false)} onSaved={() => { setSetting(false); setPinOn(true); }} />}
     </>
   );

@@ -3,7 +3,7 @@ import { Portal } from './Portal';
 import { IClose } from './icons';
 
 /** Plain bottom sheet with a title and a close button. `children` gets a close() so a save can animate out. */
-export function Sheet({ title, onClose, children, tall }: { title: string; onClose: () => void; children: (close: () => void) => ReactNode; tall?: boolean }) {
+export function Sheet({ title, onClose, children, tall, top }: { title: string; onClose: () => void; children: (close: () => void) => ReactNode; tall?: boolean; top?: boolean }) {
   const [closing, setClosing] = useState(false);
   const close = () => { setClosing(true); setTimeout(onClose, 160); };
   useEffect(() => {
@@ -12,7 +12,7 @@ export function Sheet({ title, onClose, children, tall }: { title: string; onClo
     return () => window.removeEventListener('keydown', k);
   });
   return (
-    <Portal><div className={'jx-sheet-wrap' + (closing ? ' is-closing' : '')} onClick={close}>
+    <Portal><div className={'jx-sheet-wrap' + (top ? ' jx-sheet-wrap--top' : '') + (closing ? ' is-closing' : '')} onClick={e => { e.stopPropagation(); close(); }}>
       <div className={'jx-sheet' + (tall ? ' jx-sheet--tall' : '')} onClick={e => e.stopPropagation()} role="dialog" aria-label={title}>
         <div className="jx-sheet__grab" />
         <div className="jx-sheet__head">

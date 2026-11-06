@@ -2,7 +2,7 @@
 // to Supabase when there's a connection. Last write wins; the server clock orders changes.
 import { useSyncExternalStore } from 'react';
 import { supabase } from './supabase';
-import { allItems, clearAll, kvGet, kvSet, putItems } from './idb';
+import { allItems, clearAll, clearItems, kvGet, kvSet, putItems } from './idb';
 import type { Item, Profile, SyncState } from './types';
 
 type Local = Item & { _rev?: number };   // _rev > 0 means "changed here, not synced yet"
@@ -78,6 +78,26 @@ export async function signOutAndWipe() {
   byId.clear(); profileRev = 0; avatarPending = null;
   try { localStorage.removeItem('jaiye-pin'); } catch { /* ignore */ }
   emit({ userId: null, ready: false, items: [], profile: null, avatar: null, sync: { status: 'idle', pending: 0, lastSync: null } });
+}
+
+/** Wipe this person's entries everywhere (and with `everything`, their setup too, so onboarding runs again). Needs a connection. */
+export async function resetData(everything: boolean) {
+  if (!navigator.onLine) throw new Error('offline');
+  await sync();                                   // let anything in flight land first, so it can't come back after
+  const { error } = await supabase.rpc('reset_my_data', { everything });
+  if (error) throw error;
+  byId.clear();
+  await clearItems();
+  await kvSet('lastSync', 0);
+  try { localStorage.removeItem('jaiye-last-cat'); } catch { /* ignore */ }
+  if (everything && state.profile) {
+    const profile: Profile = { ...state.profile, onboarded_at: null, monthly_budget: null, payday: null, meal_prep_day: null, prefs: { ...DEFAULT_PREFS } };
+    profileRev = 0;
+    await kvSet('profile', profile); await kvSet('profileRev', 0);
+    try { localStorage.removeItem('jaiye-pin'); } catch { /* ignore */ }
+    emit({ profile });
+  }
+  publishItems();
 }
 
 /* ---------- local writes ---------- */

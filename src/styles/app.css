@@ -605,3 +605,22 @@ button.jx-li:active { background: var(--muted) !important; }
 
 /* locker */
 .jx-lockgate { padding: 18px 8px 6px; }
+
+/* income + reset */
+.jx-pill--btn { cursor: pointer; }
+.jx-pill--btn:active { transform: scale(.95); }
+.jx-huge.is-neg { color: var(--danger); }
+.jx-left__sub--2 { display: block; margin-top: 10px; }
+.jx-left__cta { display: inline-flex; align-items: center; gap: 4px; margin-top: 12px; color: var(--accent) !important; font-weight: 500; }
+button.jx-box { text-align: left; align-items: stretch; }
+button.jx-box:active:not(:disabled) { transform: scale(.97); }
+.jx-box small { display: flex; justify-content: space-between; align-items: center; gap: 4px; }
+.jx-box small em { font-style: normal; font-size: 11px; color: var(--accent); }
+.jx-resetopts { display: flex; flex-direction: column; gap: 10px; }
+.jx-resetopt { position: relative; display: flex; flex-direction: column; gap: 4px; text-align: left; padding: 14px 46px 14px 14px; border-radius: 16px; background: var(--surface) !important; border: 1.5px solid var(--border) !important; transition: border-color .12s; }
+.jx-resetopt.is-on { border-color: var(--danger) !important; }
+.jx-resetopt.is-on .jx-pick__check { background: var(--danger); border-color: var(--danger); }
+.jx-resetopt b { font-weight: 600; }
+.jx-resetopt small { color: var(--text-2); font-size: 13px; line-height: 1.4; }
+.jx-btn--destroy { background: var(--danger) !important; color: #fff !important; }
+.jx-btn--destroy:disabled { opacity: .4; }

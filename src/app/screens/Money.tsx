@@ -66,30 +66,50 @@ function Overview({ api }: { api: ShellApi }) {
   const pct = budget ? Math.min(100, (m.spent / budget) * 100) : 0;
   const day = new Date().getDate(), days = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
   const onTrack = budget ? m.spent / budget <= day / days + 0.02 : true;
+  const hasIncome = m.income > 0;
+  const balance = m.income - m.spent;
+  const big = hasIncome ? balance : budget ? left : m.spent;
+  const usedPct = hasIncome ? Math.min(100, (m.spent / m.income) * 100) : 0;
+  const monthName = new Date().toLocaleDateString('en', { month: 'long' });
+  const [income, setIncome] = useState(false);
   // categories with a limit but no spending yet still show, so the limit is visible
   const rows = [...m.cats, ...Object.keys(caps).filter(c => caps[c] > 0 && !m.cats.some(([k]) => k === c)).map(c => [c, 0] as [string, number])];
 
   return (
     <>
       <div className="jx-card jx-left jx-rise">
-        <div className="jx-left__top"><small>{budget ? 'Left to spend' : 'Spent'}</small><span className="jx-pill jx-pill--plain">This month</span></div>
-        <b className="jx-huge">{hide ? <Amount n={budget ? left : m.spent} currency={p.currency} /> : <Count value={budget ? left : m.spent} render={n => money(n, p.currency)} />}</b>
-        {budget > 0 && (
+        <div className="jx-left__top">
+          <small>{hasIncome ? 'Left this month' : budget ? 'Left to spend' : 'Spent'}</small>
+          {hasIncome ? <button className="jx-pill jx-pill--plain jx-pill--btn" onClick={() => setIncome(true)}>Edit income</button> : <span className="jx-pill jx-pill--plain">This month</span>}
+        </div>
+        <b className={'jx-huge' + (hasIncome && balance < 0 ? ' is-neg' : '')}>{hide ? <Amount n={big} currency={p.currency} /> : <Count value={big} render={n => money(n, p.currency)} />}</b>
+        {hasIncome ? (
+          <>
+            <small className="jx-left__sub">
+              {balance < 0
+                ? <em className="warn"><span>Spent <Amount n={-balance} currency={p.currency} /> more than came in</span></em>
+                : <span><Amount n={m.income} currency={p.currency} /> in · <Amount n={m.spent} currency={p.currency} /> spent</span>}
+            </small>
+            <div className="jx-meter" role="progressbar" aria-valuenow={Math.round(usedPct)} aria-valuemin={0} aria-valuemax={100} aria-label="Income spent"><i style={{ width: `${usedPct}%` }} className={balance < 0 ? 'over' : ''} /></div>
+            {budget > 0 && <small className="jx-left__sub jx-left__sub--2">Budget: {left >= 0 ? <><Amount n={left} currency={p.currency} /> left of <Amount n={budget} currency={p.currency} /></> : <em className="warn">over by <Amount n={-left} currency={p.currency} /></em>}</small>}
+          </>
+        ) : budget > 0 ? (
           <>
             <small className="jx-left__sub">of {hide ? '•••' : money(budget, p.currency)} {m.spent > 0 && <em className={onTrack ? 'ok' : 'warn'}>{onTrack ? 'on track' : 'ahead of pace'}</em>}</small>
             <div className="jx-meter" role="progressbar" aria-valuenow={Math.round(pct)} aria-valuemin={0} aria-valuemax={100} aria-label="Budget used"><i style={{ width: `${pct}%` }} className={left < 0 ? 'over' : ''} /></div>
           </>
-        )}
+        ) : null}
+        {!hasIncome && <button className="jx-link jx-link--sm jx-left__cta" onClick={() => setIncome(true)}><IPlus size={15} /> Add your income for {monthName}</button>}
       </div>
 
       <button className="jx-btn jx-btn--primary jx-btn--block jx-logbtn" onClick={api.money}><IPlus size={20} /> Log money</button>
 
       <div className="jx-boxes">
-        {[{ k: 'Income', v: m.income, c: 'ok' }, { k: 'Spent', v: m.spent, c: '' }, { k: 'Saved', v: m.saved, c: 'blue' }].map((b, i) => (
-          <div key={b.k} className={'jx-card jx-box jx-rise jx-box--' + (b.c || 'plain')} style={{ animationDelay: `${i * 25}ms` }}>
-            <small>{b.k}</small>
+        {[{ k: 'Income', v: m.income, c: 'ok', go: () => setIncome(true) }, { k: 'Spent', v: m.spent, c: '', go: api.money }, { k: 'Saved', v: m.saved, c: 'blue' }].map((b, i) => (
+          <button key={b.k} type="button" disabled={!b.go} onClick={b.go} className={'jx-card jx-box jx-rise jx-box--' + (b.c || 'plain')} style={{ animationDelay: `${i * 25}ms` }} aria-label={b.k === 'Income' ? 'Income this month, tap to edit' : undefined}>
+            <small>{b.k}{b.k === 'Income' && <em>Edit</em>}</small>
             <b><Amount n={b.v} currency={p.currency} /></b>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -128,7 +148,7 @@ function Overview({ api }: { api: ShellApi }) {
       {m.list.length ? (
         <div className="jx-card jx-list jx-rise" style={{ animationDelay: '60ms' }}>
           {m.list.map(i => (
-            <button key={i.id} className="jx-li" onClick={() => api.edit(i)}>
+            <button key={i.id} className="jx-li" onClick={() => (i.data.monthIncome ? setIncome(true) : api.edit(i))}>
               <span className="jx-row__icon">{i.source === 'typed' ? <ISpark size={15} /> : <IWallet size={15} />}</span>
               <span className="jx-li__txt"><b>{i.title}</b><small>{catOf(i) !== i.title ? catOf(i) + ' · ' : ''}{new Date(i.at!).toLocaleDateString('en', { day: 'numeric', month: 'short' })}</small></span>
               <Amount n={i.amount!} currency={p.currency} sign className={'jx-li__amt' + (i.amount! > 0 ? ' is-in' : '')} />
@@ -139,8 +159,44 @@ function Overview({ api }: { api: ShellApi }) {
         <Empty icon={<IWallet size={20} />} title="No money logged yet" text="Try “Bolt to Yaba 3.2k” or “Salary 450k” in Tell Jaiye." />
       )}
 
+      {income && <IncomeSheet onClose={() => setIncome(false)} onSaved={msg => { setIncome(false); api.toast(msg); }} />}
       {budgets && <BudgetSheet onClose={() => setBudgets(false)} onSaved={() => { setBudgets(false); api.toast('Limits saved'); }} />}
     </>
+  );
+}
+
+/** The month's income in one place. It's saved as one income entry for the month, so everything you spend comes off it. */
+function IncomeSheet({ onClose, onSaved }: { onClose: () => void; onSaved: (msg: string) => void }) {
+  const p = useStore(s => s.profile)!;
+  const items = useStore(s => s.items);
+  const key = monthKey();
+  const prevKey = (() => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - 1); return monthKey(d); })();
+  const mine = items.find(i => i.kind === 'money' && i.data.monthIncome === key);
+  const last = items.find(i => i.kind === 'money' && i.data.monthIncome === prevKey);
+  const start = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  const other = items.filter(i => i.kind === 'money' && (i.amount ?? 0) > 0 && !i.data.monthIncome && i.at && new Date(i.at) >= start);
+  const otherSum = other.reduce((a, i) => a + (i.amount ?? 0), 0);
+  const [v, setV] = useState(mine?.amount ? commas(String(mine.amount)) : last?.amount ? commas(String(last.amount)) : '');
+  const month = new Date().toLocaleDateString('en', { month: 'long' });
+
+  async function save(close: () => void) {
+    const n = num(v);
+    if (mine && !n) await removeItem(mine.id);
+    else if (mine) await updateItem(mine.id, { amount: n });
+    else if (n) await addItem({ kind: 'money', title: `Income for ${month}`, amount: n, currency: p.currency, at: start.toISOString(), data: { category: 'Salary', monthIncome: key } });
+    close(); setTimeout(() => onSaved(n ? `${month} income set to ${money(n, p.currency)}` : `${month} income cleared`), 170);
+  }
+  return (
+    <Sheet title={`Income for ${month}`} onClose={onClose}>
+      {close => (
+        <>
+          <Field label={`How much comes in this month (${p.currency})`} value={v} onChange={x => setV(commas(x))} inputMode="numeric" placeholder="e.g. 450,000" autoFocus />
+          {!mine && last?.amount ? <p className="jx-note">Filled in from last month. Change it if this month is different.</p> : null}
+          <p className="jx-note">Everything you log as spent comes off this. {otherSum > 0 && <>You also logged {money(otherSum, p.currency)} of other income this month, which is added on top.</>}</p>
+          <div className="jx-sheet__actions"><button className="jx-btn jx-btn--primary jx-btn--block" disabled={!num(v) && !mine} onClick={() => void save(close)}>{num(v) ? 'Save income' : 'Clear income'}</button></div>
+        </>
+      )}
+    </Sheet>
   );
 }
 

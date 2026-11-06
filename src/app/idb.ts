@@ -52,3 +52,10 @@ export async function clearAll(): Promise<void> {
   tx.objectStore('kv').clear();
   await new Promise<void>((res, rej) => { tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error); });
 }
+
+export async function clearItems(): Promise<void> {
+  const db = await open();
+  const tx = db.transaction('items', 'readwrite');
+  tx.objectStore('items').clear();
+  await new Promise<void>((res, rej) => { tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error); });
+}

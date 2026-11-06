@@ -45,3 +45,4 @@ export const ITarget = (p: P) => <S {...p}><circle cx="12" cy="12" r="8" /><circ
 export const IReceipt = (p: P) => <S {...p}><path d="M6 3.5h12v17l-2.5-1.5-2 1.5-1.5-1.2-1.5 1.2-2-1.5L6 20.5z" /><path d="M9 8.5h6M9 12h6M9 15.5h3.5" /></S>;
 export const IFlame = (p: P) => <S {...p}><path d="M12 20.5c3.6 0 6-2.5 6-5.8 0-3.6-2.8-5.6-3.8-9.2-1.8 1.4-2.6 3.3-2.6 5-1.2-.8-1.9-2-2.1-3.3C7.8 9 6 11.4 6 14.7c0 3.3 2.4 5.8 6 5.8z" /></S>;
 export const IPen = (p: P) => <S {...p}><path d="M4.5 19.5 5.5 15 15.5 5a2.1 2.1 0 0 1 3 3l-10 10z" /><path d="m13.5 7 3 3" /></S>;
+export const IReset = (p: P) => <S {...p}><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3" /><path d="M4.5 4.5v4h4" /></S>;
