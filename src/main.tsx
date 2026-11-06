@@ -8,6 +8,7 @@ import './styles/motion.css';
 import './styles/fixes.css';
 import './styles/mobile.css';
 import './styles/cover.css';
+import './styles/compat.css';
 import Landing from './pages/Landing';
 import { watchReveals } from './reveal';
 import { useTheme } from './theme';

@@ -44,7 +44,7 @@ html, body { overflow-x: clip; }
   /* How it works + the Tell Jaiye demo */
   .steps3 { gap: 18px; }
   .split { gap: 26px; }
-  .demo, .demo__sheet { height: auto !important; min-height: 300px !important; }
+  .demo, .demo__sheet { height: auto !important; min-height: 0 !important; }
   .demo__sheet { padding: 16px !important; }
 
   /* Stats */

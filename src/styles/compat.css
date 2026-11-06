@@ -1,0 +1,33 @@
+/* Older iPhones (iOS 15 and below) don't understand color-mix() or overflow: clip.
+   Without these fallbacks the blue backgrounds vanish and the page slides sideways.
+   Each block only applies where the feature is missing, so newer phones are unchanged. */
+
+@supports not (overflow-x: clip) {
+  .lp, .jx-shell { overflow-x: hidden; }
+  html { overflow-x: hidden; }
+  .cta { overflow: hidden; }
+}
+
+@supports not (color: color-mix(in srgb, red, blue)) {
+  /* Landing */
+  .hero__bg { background: linear-gradient(180deg, #3D78FF 0%, #376FF8 70%, var(--page) 100%); }
+  [data-theme='dark'] .hero__bg { background: linear-gradient(180deg, #1b2f6b 0%, #14224f 70%, var(--page) 100%); }
+  .nav.is-solid { background: rgba(244, 245, 247, .94); }
+  [data-theme='dark'] .nav.is-solid { background: rgba(11, 12, 15, .94); }
+  .demo__input.is-done { border-color: rgba(47, 107, 255, .45); }
+  .ip__home { background: linear-gradient(180deg, var(--header-top), #8FB0FB 60%, var(--page)); }
+  [data-theme='dark'] .ip__home { background: linear-gradient(180deg, var(--header-top), #121C39 60%, var(--page)); }
+  .day__item.is-on .day__dot { box-shadow: 0 0 0 6px rgba(47, 107, 255, .18); }
+
+  /* App (doubled class so it beats app.css, which loads later) */
+  .jx.jx { --grad: linear-gradient(180deg, #3D78FF 0%, #8FB0FB 52%, #F4F5F7 100%); }
+  [data-theme='dark'] .jx.jx { --grad: linear-gradient(180deg, #17295C 0%, #121C39 52%, #0B0C0F 100%); }
+  .jx .jx-btn--primary { box-shadow: 0 10px 24px -10px rgba(47, 107, 255, .7); }
+  .jx .jx-pill--ok { background: rgba(22, 163, 74, .14); }
+  .jx .jx-pill--warn { background: rgba(229, 72, 77, .12); }
+  .jx .jx-msg--err { background: rgba(229, 72, 77, .1); }
+  .jx .jx-msg--ok { background: rgba(22, 163, 74, .12); }
+  .jx .jx-photo__ring { border-color: rgba(47, 107, 255, .6); }
+  .jx .jx-photo__ring.has { border: 0; }
+  .jx .jx-tellbox.is-listening { box-shadow: 0 0 0 4px rgba(229, 72, 77, .16); }
+}
