@@ -3,7 +3,7 @@ import { useStore } from '../store';
 import type { ShellApi } from '../Shell';
 import type { Item } from '../types';
 import { DAYS, sameDay, startOfDay, startOfWeek, time } from '../format';
-import { Empty, KIND, SyncLine, Tag } from '../ui/bits';
+import { Empty, KIND, SyncLine, Tag, UNTIMED } from '../ui/bits';
 import { ICal, IPlus } from '../ui/icons';
 
 type View = 'month' | 'week' | 'day';
@@ -15,7 +15,7 @@ export default function Calendar({ api }: { api: ShellApi }) {
   const [view, setView] = useState<View>('day');
   const [cur, setCur] = useState(() => startOfDay(new Date()));
   const today = new Date();
-  const timed = useMemo(() => items.filter(i => i.at && i.kind !== 'money' && i.kind !== 'grocery' && i.kind !== 'pantry'), [items]);
+  const timed = useMemo(() => items.filter(i => i.at && !UNTIMED.includes(i.kind)), [items]);
 
   const shift = (n: number) => setCur(c => {
     const d = new Date(c);

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Kind } from '../types';
-import { IHabit, IMeal, INote, IPhone, IBed, IBell, ITasks, IVideo, IWallet, ISync, IOffline } from './icons';
+import { useNavigate } from 'react-router-dom';
+import { IHabit, IMeal, INote, IPhone, IBed, IBell, ITasks, IVideo, IWallet, ISync, IOffline, IReceipt, ITarget, IBook, ILock, IBack } from './icons';
 import { useStore } from '../store';
 import { money } from '../format';
 
@@ -16,6 +17,10 @@ export const KIND: Record<Kind, { label: string; tag: string; Icon: (p: { size?:
   habit: { label: 'Habit', tag: 'meals', Icon: IHabit },
   grocery: { label: 'Grocery', tag: 'meals', Icon: IMeal },
   pantry: { label: 'Pantry', tag: 'meals', Icon: IMeal },
+  bill: { label: 'Bill', tag: 'money', Icon: IReceipt },
+  goal: { label: 'Goal', tag: 'money', Icon: ITarget },
+  journal: { label: 'Journal', tag: 'meeting', Icon: IBook },
+  locker: { label: 'Locker', tag: 'note', Icon: ILock },
 };
 
 export function Tag({ kind, children }: { kind: Kind; children?: ReactNode }) {
@@ -95,3 +100,23 @@ export function Amount({ n, currency, sign, className }: { n: number; currency: 
     </button>
   );
 }
+
+/** Kinds that are logs or private, so they never show on Home's "next up" or the calendar. */
+export const UNTIMED: Kind[] = ['money', 'grocery', 'pantry', 'bill', 'goal', 'journal', 'locker', 'sleep', 'habit'];
+
+/** Title bar for screens that live under More: back arrow, title, optional round action. */
+export function SubHead({ title, back = '/app/more', action }: { title: string; back?: string; action?: ReactNode }) {
+  const nav = useNavigate();
+  return (
+    <div className="jx-titlebar">
+      <div className="jx-titlebar__back">
+        <button className="jx-iconbtn" aria-label="Back to More" onClick={() => nav(back)}><IBack size={18} /></button>
+        <div><h1 className="jx-title">{title}</h1><SyncLine /></div>
+      </div>
+      {action}
+    </div>
+  );
+}
+
+/** Local calendar day key, e.g. 2026-11-06. */
+export const dayKey = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;

@@ -6,7 +6,7 @@ import { greeting, sameDay, startOfWeek, symbol, time } from '../format';
 import { TaskRow } from './Tasks';
 import { useAppTheme } from '../ui/theme';
 import { AppMark } from '../ui/Mark';
-import { Amount, Avatar, Empty, KIND, Tag } from '../ui/bits';
+import { Amount, Avatar, Empty, KIND, Tag, UNTIMED } from '../ui/bits';
 import { IArrowUR, ICal, IMoon, IPlus, ISend, ISun, ITasks, ITrendDown } from '../ui/icons';
 
 export default function Home({ api }: { api: ShellApi }) {
@@ -26,7 +26,7 @@ export default function Home({ api }: { api: ShellApi }) {
   const sub = [nTasks && `${nTasks} task${nTasks > 1 ? 's' : ''}`, nMeet && `${nMeet} meeting${nMeet > 1 ? 's' : ''} today`].filter(Boolean).join(', ') || 'Nothing due today';
 
   const upNext = useMemo(() => items
-    .filter(i => i.at && new Date(i.at).getTime() > Date.now() - 30 * 60000 && !i.done && i.kind !== 'money')
+    .filter(i => i.at && new Date(i.at).getTime() > Date.now() - 30 * 60000 && !i.done && !UNTIMED.includes(i.kind))
     .sort((a, b) => a.at!.localeCompare(b.at!)).slice(0, 3), [items]);
 
   const week = useMemo(() => {

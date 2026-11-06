@@ -6,6 +6,10 @@ import Money from './screens/Money';
 import Meals from './screens/Meals';
 import More from './screens/More';
 import Tasks from './screens/Tasks';
+import Sleep from './screens/Sleep';
+import Habits from './screens/Habits';
+import Journal from './screens/Journal';
+import Locker from './screens/Locker';
 import TellSheet, { type TellInit } from './screens/TellSheet';
 import MoneySheet from './screens/MoneySheet';
 import MeSheet from './screens/MeSheet';
@@ -21,7 +25,7 @@ const TABS = [
   { path: '/app/more', label: 'More', Icon: IMore },
 ];
 // Screens reached from More keep the More tab lit.
-const UNDER_MORE = ['/app/tasks'];
+const UNDER_MORE = ['/app/tasks', '/app/sleep', '/app/habits', '/app/journal', '/app/locker'];
 
 export type ShellApi = {
   tell: (init?: TellInit) => void;
@@ -61,6 +65,10 @@ export default function Shell() {
           <Route path="meals" element={<Meals api={api} />} />
           <Route path="more" element={<More api={api} />} />
           <Route path="tasks" element={<Tasks api={api} />} />
+          <Route path="sleep" element={<Sleep api={api} />} />
+          <Route path="habits" element={<Habits api={api} />} />
+          <Route path="journal" element={<Journal api={api} />} />
+          <Route path="locker" element={<Locker api={api} />} />
           <Route path="*" element={<Home api={api} />} />
         </Routes>
       </main>

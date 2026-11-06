@@ -532,3 +532,76 @@ button.jx-li:active { background: var(--muted) !important; }
 .jx-mini { height: 28px; padding: 0 10px !important; border-radius: 999px; background: var(--muted) !important; font-size: 12.5px; font-weight: 500; color: var(--text-2) !important; transition: background .12s, color .12s; }
 .jx-mini.is-on { background: var(--accent) !important; color: #fff !important; }
 .jx-sheet__actions .jx-btn--ghost:not(.jx-btn--danger) { padding: 0 20px; }
+
+/* ---------- Stage 4: money tabs, sleep, habits, journal, locker ---------- */
+.jx-field--tight { margin-top: 14px; }
+.jx-field--tight input[type="time"], .jx-field--tight input[type="date"] { -webkit-appearance: none; appearance: none; min-height: 54px; }
+.jx-twofield { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.jx-note--big { font-size: 15px; color: var(--text-2); }
+.jx-note--big b { color: var(--text); }
+.jx-note--top { margin: 0 2px 12px; }
+.jx-textarea { width: 100%; min-height: 180px; margin-top: 14px; border-radius: 16px; border: 1.5px solid var(--border); background: var(--surface); padding: 14px 16px; font: inherit; font-size: 16px; line-height: 1.5; resize: vertical; outline: none; color: var(--text); transition: border-color .12s, box-shadow .12s; }
+.jx-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.jx-btn--sm { height: 34px; padding: 0 14px; font-size: 14px !important; gap: 4px; }
+
+/* where it went */
+.jx-where { padding: 16px; }
+.jx-stackbar { display: flex; height: 12px; border-radius: 12px; overflow: hidden; gap: 2px; margin-bottom: 6px; background: var(--chart-track); }
+.jx-stackbar i { display: block; min-width: 4px; flex-basis: 0; transform-origin: left; animation: jx-growx .4s var(--ease-out) both; }
+.jx-where__row { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+.jx-where__row + .jx-where__row { border-top: 1px solid var(--border); }
+.jx-where__dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.jx-where__txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.jx-where__txt b { font-weight: 500; }
+.jx-where__txt small { color: var(--text-2); font-size: 12.5px; }
+.jx-where__txt small.is-over, .jx-bill small.is-over { color: var(--danger); }
+.jx-bill small.is-soon { color: var(--tag-tasks-fg); }
+.jx-meter--thin { display: block; height: 5px; margin-top: 6px; }
+.jx-limits { display: flex; flex-direction: column; margin-top: 4px; }
+.jx-limit { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+.jx-limit + .jx-limit { border-top: 1px solid var(--border); }
+.jx-limit b { flex: 1; font-weight: 500; }
+.jx-limit input { width: 132px; height: 42px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--surface); padding: 0 12px; font-size: 16px; text-align: right; outline: none; font-variant-numeric: tabular-nums; }
+.jx-limit input:focus { border-color: var(--accent); }
+
+/* bills */
+.jx-li__tap { padding: 2px 0; }
+.jx-bill.is-done .jx-check, .jx-habit.is-done .jx-habit__top .jx-check { background: var(--success) !important; border-color: var(--success) !important; color: #fff !important; }
+.jx-bill.is-done .jx-check svg, .jx-habit.is-done .jx-habit__top .jx-check svg { animation: jx-pop .18s var(--ease-out); }
+.jx-bill.is-done .jx-li__amt { color: var(--text-soft); }
+
+/* goals */
+.jx-goals, .jx-habits, .jx-entries { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.jx-goal { padding: 14px 16px; }
+.jx-goal__top { display: flex; align-items: center; gap: 12px; width: 100%; }
+.jx-goal__pct { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.jx-goal .jx-meter { margin-top: 12px; }
+.jx-goal__foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.jx-goal__foot small { color: var(--text-2); font-size: 12.5px; }
+
+/* habits */
+.jx-habit { padding: 12px 14px; }
+.jx-habit__top { display: flex; align-items: center; gap: 12px; }
+.jx-habit__top small { display: inline-flex; align-items: center; gap: 4px; color: var(--text-2); font-size: 12.5px; }
+.jx-habit__top small svg { color: var(--tag-tasks-fg); }
+.jx-habit__week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; }
+.jx-habit__day { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 2px 0; }
+.jx-habit__day small { font-size: 11px; color: var(--text-soft); }
+.jx-habit__day.is-today small { color: var(--text); font-weight: 600; }
+.jx-habit__day i { width: 100%; max-width: 32px; height: 10px; border-radius: 6px; background: var(--chart-track); transition: background .12s; }
+.jx-habit__day.is-on i { background: var(--success); }
+
+/* journal */
+.jx-prompt { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.jx-prompt b { font-weight: 600; font-size: 16px; }
+.jx-moodweek { display: grid; grid-template-columns: repeat(7, 1fr); padding: 14px 10px; margin-top: 10px; }
+.jx-moodweek__day { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.jx-moodweek__day i { width: 22px; height: 22px; border-radius: 50%; background: var(--chart-track); }
+.jx-moodweek__day small { font-size: 11px; color: var(--text-soft); }
+.jx-entry { display: flex !important; flex-direction: column; gap: 8px; padding: 14px 16px; text-align: left; width: 100%; }
+.jx-entry__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.jx-entry__top small { color: var(--text-2); font-size: 12.5px; }
+.jx-entry__txt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; line-height: 1.45; }
+
+/* locker */
+.jx-lockgate { padding: 18px 8px 6px; }

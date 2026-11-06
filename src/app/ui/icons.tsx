@@ -41,3 +41,7 @@ export const IGear = (p: P) => <S {...p}><circle cx="12" cy="12" r="3" /><path d
 export const ICart = (p: P) => <S {...p}><path d="M3.5 5h2l2 10h10l2-7H7" /><circle cx="9.5" cy="19" r="1.3" /><circle cx="16.5" cy="19" r="1.3" /></S>;
 export const IBox = (p: P) => <S {...p}><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z" /><path d="M4 8.5 12 13l8-4.5M12 13v7" /></S>;
 export const IToday = (p: P) => <S {...p}><rect x="4" y="5.5" width="16" height="14.5" rx="3" /><path d="M8 3.5v4M16 3.5v4M4 10h16" /><circle cx="12" cy="15" r="1.6" fill="currentColor" /></S>;
+export const ITarget = (p: P) => <S {...p}><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="4" /><circle cx="12" cy="12" r=".6" fill="currentColor" /></S>;
+export const IReceipt = (p: P) => <S {...p}><path d="M6 3.5h12v17l-2.5-1.5-2 1.5-1.5-1.2-1.5 1.2-2-1.5L6 20.5z" /><path d="M9 8.5h6M9 12h6M9 15.5h3.5" /></S>;
+export const IFlame = (p: P) => <S {...p}><path d="M12 20.5c3.6 0 6-2.5 6-5.8 0-3.6-2.8-5.6-3.8-9.2-1.8 1.4-2.6 3.3-2.6 5-1.2-.8-1.9-2-2.1-3.3C7.8 9 6 11.4 6 14.7c0 3.3 2.4 5.8 6 5.8z" /></S>;
+export const IPen = (p: P) => <S {...p}><path d="M4.5 19.5 5.5 15 15.5 5a2.1 2.1 0 0 1 3 3l-10 10z" /><path d="m13.5 7 3 3" /></S>;
